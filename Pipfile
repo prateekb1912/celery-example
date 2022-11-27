@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 celery = "*"
 python-dotenv = "*"
+sqlalchemy = "*"
+flask = "*"
+requests = "*"
 
 [dev-packages]
 
