@@ -3,9 +3,16 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
-
+from celery.schedules import crontab
 
 app = Celery('tasks', backend='db+sqlite:///db.sqlite3', broker='amqp://')
+
+app.conf.beat_schedule = {
+    'scraping-task': {
+        'task': 'tasks.scrape_rss_news',
+        'schedule': crontab()
+    }
+}
 
 @app.task
 def save_data(articles_list):
@@ -42,6 +49,3 @@ def scrape_rss_news():
 
     except Exception as e:
         print(f"Job failed: {e}")
-
-
-scrape_rss_news()
